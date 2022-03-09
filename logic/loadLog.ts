@@ -2,12 +2,6 @@ import os from "os";
 import fs from 'fs'; 
 import { LoadEntry } from "../types/load";
 
-const writeOut = (data) => {
-  fs.appendFile(`data.log`, JSON.stringify(data) + ',', 'utf-8', (err) => {
-    console.error(err);
-  });
-}
-
 const MINUTES_OF_LOGS = 10;
 const LOGS_PER_MINUTE = 6; // every 10 seconds
 const LOG_MAX_LENGTH = MINUTES_OF_LOGS * LOGS_PER_MINUTE;
@@ -39,10 +33,8 @@ export const startLog = (): (() => void) => {
     // while server is running, get log every 10 minutes.
     const initialLoad = getLoadTimes();
     log = [initialLoad];
-    writeOut(initialLoad);
     logInterval = setInterval(() => {
       const loadTimes = getLoadTimes();
-      writeOut(loadTimes);
       log.push(loadTimes);
       while (log.length > LOG_MAX_LENGTH) {
         log.shift();
