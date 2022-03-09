@@ -1,3 +1,10 @@
+# Brian Boyko Technical Test Datadog
+
+## Technical Decisions
+
+* Next.js - As the solution requires both backend and frontend code, Next.js was an ideal solution. 
+
+---
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
