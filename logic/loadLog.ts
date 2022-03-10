@@ -29,8 +29,6 @@ let startedFlag = false;
 export const startLog = (): (() => void) => {
   let logInterval;
   if (!startedFlag) {
-    console.info("Log is logging");
-    // while server is running, get log every 10 minutes.
     const initialLoad = getLoadTimes();
     log = [initialLoad];
     logInterval = setInterval(() => {

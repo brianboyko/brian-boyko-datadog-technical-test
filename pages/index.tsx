@@ -3,7 +3,7 @@ import { CpuLoadChart } from "../components/CpuLoadChart";
 import useProbe from "../hooks/useProbe";
 import useChartDataFormatter from "../hooks/useChartDataFormatter";
 import styles from "../styles/Home.module.css";
-import Alerts from '../components/Alerts';
+import Alerts from "../components/Alerts";
 /* We dont need to persist data on the backend in a 
    database, but it makes a lot of sense that we should
    at least be able to persist the data if the page refreshes,
@@ -21,8 +21,7 @@ import Alerts from '../components/Alerts';
 
 export default function Home({ loggedData }) {
   const state = useProbe();
-  const { combinedData, alerts } =
-    useChartDataFormatter({ loggedData, state });
+  const { combinedData, alerts } = useChartDataFormatter({ loggedData, state });
   return (
     <div className={styles.container}>
       <Head>
@@ -32,7 +31,11 @@ export default function Home({ loggedData }) {
       </Head>
 
       <main className={styles.main}>
-        <CpuLoadChart data={combinedData} strains={alerts.filter(entry => entry.isHeavyLoad)} recoveries={alerts.filter(entry => !entry.isHeavyLoad)} />
+        <CpuLoadChart
+          data={combinedData}
+          strains={alerts.filter((entry) => entry.isHeavyLoad)}
+          recoveries={alerts.filter((entry) => !entry.isHeavyLoad)}
+        />
         <Alerts alerts={alerts} />
       </main>
     </div>

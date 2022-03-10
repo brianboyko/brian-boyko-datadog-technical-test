@@ -9,8 +9,6 @@ A user should be able to view your application to answer the following questions
 - [✔] Has my computer been under heavy CPU load for 2 minutes or more? When? How many times?
 - [✔] Has my computer recovered from heavy CPU load? When? How many times?
 
- 
-
 ## Product requirements:
 
 - [✔] The front-end application should communicate with a local back-end service to retrieve CPU load average information from your computer (see below).
@@ -18,8 +16,6 @@ A user should be able to view your application to answer the following questions
 - [✔] The front-end application should maintain a 10 minute window of historical CPU load information.
 - [✔] The front-end application should alert the user to high CPU load.
 - [ ] The front-end application should alert the user when CPU load has recovered.
-
- 
 
 ## Engineering requirements:
 
@@ -29,11 +25,21 @@ A user should be able to view your application to answer the following questions
 
 ### A small explaination of how I would extend or improve the application design if I was building this for production
 
-First, I would probably suggest that the back-end be made an independent microservice. Next.js was a good choice for a simple proof of concept design and got up and running very quickly, but ideally the server logging the data should not be the same server that displays the front-end.  
+This is probably the biggest thing I would have done differently - I probably would have spent more time clarifying the requirements with the client.
 
-Right now, the alerting logic is not that sophisticated; rather than waiting for an event to happen, it creates responses out of the data that is already present.  
+Lincoln was reported as saying: "Give me six hours to chop down a tree, and I'll spend five hours sharpening the axe."
 
-I chose recharts as a quick solution to getting the info displayed in a line graph but there are some nagging visual bugs that may crop up even in this small test - and that, I will admit, does not look good on an application! The time it would take to debug this "heisenbug" error (sometimes it shows up, sometimes it doesn't) in recharts would likely take up more time than the actual test. 
+Because this was "just a technical test" I rushed into it, hoping to get you an answer as soon as possible.
+
+In this case, the alerting functionality may not be what you may have expected, now that I think about it.
+
+The alerting logic is not that sophisticated. It merely informs you that periods of recovery and high load _have happened_, not _are happening._ What might have been a better solution would be to set up some sort of websocket service on the backend and frontend where the backend could send push alerts in the form of toasts, rather than sending data to the front-end to be calculated in the browser.
+
+Right now, the alerting logic is not that sophisticated; rather than waiting for an event to happen, it creates responses out of the data that is already present.
+
+First, I would probably suggest that the back-end be made an independent microservice, and that it did contain stateful data. Next.js was a good choice for a simple proof of concept design and got up and running very quickly, but ideally the server logging the data should not be the same server that displays the front-end. If nothing else, hot-refresh means that when I would change code in the browser, it would often mean a server restart.
+
+I chose recharts as a quick solution to getting the info displayed in a line graph but there are some nagging visual bugs that may crop up even in this small test - and that, I will admit, does not look good on an application! The time it would take to debug this "heisenbug" error (sometimes it shows up, sometimes it doesn't) in recharts would likely take up more time than the actual test.
 
 ## Technical Decisions
 

@@ -46,7 +46,7 @@ const StyledAlertDismissButton = styled.button<{ isStrain: boolean }>`
   &:hover {
     background-color: ${(props) => (props.isStrain ? "#e99ea0" : "#aae7a2")};
     border: 2px solid white;
-    color: ${(props) => (props.isStrain ? "white" : "black")}
+    color: ${(props) => (props.isStrain ? "white" : "black")};
   }
 `;
 
@@ -68,10 +68,6 @@ const AlertProvider = ({ children }) => {
     },
     []
   );
-  useEffect(() => {
-    console.log(dismissed);
-  }, [dismissed]);
-
   return (
     <AlertContext.Provider value={{ dismissed, dismiss }}>
       {children}
@@ -111,7 +107,6 @@ export const Alerts = ({ alerts }) => {
             {({ dismiss, dismissed }) => {
               const uniqueTime = JSON.stringify({
                 startTime: alert.startTime,
-                endTime: alert.endTime,
               });
               return !dismissed.has(uniqueTime) ? (
                 <Alert
