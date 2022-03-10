@@ -1,28 +1,58 @@
-import { useMemo } from "react";
-import { CpuLoadChart } from "../Components/CpuLoadChart";
-import useProbe from "../hooks/useProbe";
+import CpuLoadChart from "../components/CpuLoadChart";
 import testData from "../testData/testLoad.json";
+import useChartDataFormatter from "../hooks/useChartDataFormatter";
+import styles from "../styles/Home.module.css";
+import Alerts from "../components/Alerts";
+import { useCallback, useState } from "react";
+/* We dont need to persist data on the backend in a 
+   database, but it makes a lot of sense that we should
+   at least be able to persist the data if the page refreshes,
+   so long as the server is running. 
 
-const test = testData.map((entry) => ({ ...entry, min1: entry.min1 + 0.5 }));
+   So, 'getServerSideProps' makes a server-side request
+   to the Node backend for the last 10 minutes of logs...
+   (and if there are no logs, the request itself starts)
+   the process of storing them. 
 
-export default function Debug({ loggedData }) {
-  const state = useProbe();
-  const fullMeasure = useMemo(
-    () => state.data.concat(loggedData.map((l) => ({ ...l, logged: true }))),
-    [loggedData, state.data]
+   We combine those with live client-side requests every 10
+   seconds via useProbe(), and concat the logged data with the
+   incoming live data. 
+*/
+
+export default function Home() {
+  const [intensity, setIntensity] = useState<number>(6);
+  const increment = useCallback(
+    () => setIntensity((i) => i + 1),
+    [setIntensity]
   );
+  const decrement = useCallback(
+    () => setIntensity((i) => i - 1),
+    [setIntensity]
+  );
+  const { combinedData, strains, recoveries } = useChartDataFormatter({
+    loggedData: testData.map((entry) => ({
+      ...entry,
+      min1: entry.min1 + intensity / 10,
+    })),
+    state: { data: [] },
+  });
+
   return (
-    <div>
-      <CpuLoadChart data={test}/>
-      <pre>{JSON.stringify({ fullMeasure }, null, 2)}</pre>
+    <div className={styles.container}>
+      <main className={styles.main}>
+        <CpuLoadChart
+          data={combinedData}
+          strains={strains}
+          recoveries={recoveries}
+        />
+
+        <Alerts strains={strains} />
+        <div>
+          <button onClick={increment}>Increase load</button>
+          <button onClick={decrement}>Decrease load</button>
+          <div>Current load: {intensity / 10}</div>
+        </div>
+      </main>
     </div>
   );
 }
-export const getServerSideProps = async ({ req }) => {
-  // this code runs serverside so we need different ways of getting the localhost.
-  const protocol = req.headers["x-forwarded-proto"] || "http";
-  const baseUrl = req ? `${protocol}://${req.headers.host}` : "";
-  const {data} = await fetch(`${baseUrl}/api/load/log`).then((d) => d.json());
-
-  return { props: { loggedData: data || []} };
-};

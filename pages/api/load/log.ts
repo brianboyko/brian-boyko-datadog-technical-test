@@ -2,12 +2,14 @@
 
 import { startLog, getLog } from "../../../logic/loadLog";
 import type { NextApiRequest, NextApiResponse } from "next";
-import type { LoadEntry } from "../../../types/load";
-
+import { LoadEntry } from "../../../types/load";
 interface LogPayload {
-  data: LoadEntry[]
+  data: LoadEntry[];
 }
-export default function handler(_req: NextApiRequest, res: NextApiResponse<LogPayload>) {
+export default function handler(
+  _req: NextApiRequest,
+  res: NextApiResponse<LogPayload>
+) {
   startLog();
   res.status(200).json({ data: getLog() });
 }

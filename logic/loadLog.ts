@@ -1,5 +1,5 @@
 import os from "os";
-import fs from 'fs'; 
+import fs from "fs";
 import { LoadEntry } from "../types/load";
 
 const MINUTES_OF_LOGS = 10;

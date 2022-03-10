@@ -4,9 +4,12 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import type { LoadEntry } from "../../../types/load";
 
 interface LoadPayload {
-  data: LoadEntry
+  data: LoadEntry;
 }
 
-export default function handler(_req: NextApiRequest, res: NextApiResponse<LoadPayload>) {
+export default function handler(
+  _req: NextApiRequest,
+  res: NextApiResponse<LoadPayload>
+) {
   res.status(200).json({ data: getLoadTimes() });
 }

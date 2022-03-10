@@ -1,10 +1,4 @@
-import { LoadEntry } from "../types/load";
-
-interface CpuInterval {
-  startTime: number;
-  endTime: number;
-  isHeavyLoad: boolean;
-}
+import { CpuInterval, LoadEntry } from "../types/load";
 
 export const markHeavyCpuLoad = (loadEntries: LoadEntry[]): LoadEntry[] =>
   loadEntries.map((entry) => ({
@@ -21,7 +15,7 @@ export const getHeavyCpuLoadIntervals = (
   let lastChange: number = markedLoadEntries[0].timeStamp;
   for (let i = 1, l = markedLoadEntries.length; i < l; i++) {
     const entry = markedLoadEntries[i];
-    if (entry.meta.isHeavyLoad !== isHeavyLoad) {
+    if (entry.meta.isHeavyLoad !== isHeavyLoad || i === l - 1) {
       intervals.push({
         isHeavyLoad,
         startTime: lastChange,
@@ -31,7 +25,5 @@ export const getHeavyCpuLoadIntervals = (
       lastChange = entry.timeStamp;
     }
   }
-  // get the last interval
-  intervals.push({ isHeavyLoad, startTime: lastChange, endTime: Date.now() });
   return intervals;
 };
