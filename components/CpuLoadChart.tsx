@@ -9,16 +9,21 @@ import {
   ReferenceArea,
 } from "recharts";
 import { format } from "date-fns";
+import styles from './CpuLoadChart.module.scss';
+import { useState } from "react";
 
 export const CpuLoadChart = ({ data, strains, recoveries }) => {
+  const cLoad = data[data.length - 1].min1
   return (
+    <div className={styles["chart-container"]}>
+      <h2>Current Load: {cLoad}</h2>
     <LineChart
       width={600}
       height={480}
-      data={data}
+      data={data.map((entry) => ({...entry, load: entry.min1}))}
       margin={{ top: 5, right: 5, bottom: 80, left: 25 }}
     >
-      <Line type="monotone" dataKey="min1" stroke="#8884d8" />
+      <Line type="monotone" dataKey="load" stroke="#8884d8" />
       <ReferenceLine y={1} stroke="red" />
       <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
       <XAxis
@@ -68,6 +73,7 @@ export const CpuLoadChart = ({ data, strains, recoveries }) => {
         />
       ))}
     </LineChart>
+    </div>
   );
 };
 

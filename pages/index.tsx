@@ -21,7 +21,7 @@ import Alerts from '../components/Alerts';
 
 export default function Home({ loggedData }) {
   const state = useProbe();
-  const { combinedData, strains, recoveries } =
+  const { combinedData, alerts } =
     useChartDataFormatter({ loggedData, state });
   return (
     <div className={styles.container}>
@@ -32,8 +32,8 @@ export default function Home({ loggedData }) {
       </Head>
 
       <main className={styles.main}>
-        <CpuLoadChart data={combinedData} strains={strains} recoveries={recoveries} />
-        <Alerts strains={strains} />
+        <CpuLoadChart data={combinedData} strains={alerts.filter(entry => entry.isHeavyLoad)} recoveries={alerts.filter(entry => !entry.isHeavyLoad)} />
+        <Alerts alerts={alerts} />
       </main>
     </div>
   );

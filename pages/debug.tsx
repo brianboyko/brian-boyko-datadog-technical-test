@@ -29,7 +29,7 @@ export default function Home() {
     () => setIntensity((i) => i - 1),
     [setIntensity]
   );
-  const { combinedData, strains, recoveries } = useChartDataFormatter({
+  const { combinedData, alerts } = useChartDataFormatter({
     loggedData: testData.map((entry) => ({
       ...entry,
       min1: entry.min1 + intensity / 10,
@@ -42,11 +42,11 @@ export default function Home() {
       <main className={styles.main}>
         <CpuLoadChart
           data={combinedData}
-          strains={strains}
-          recoveries={recoveries}
+          strains={alerts.filter((entry) => entry.isHeavyLoad)}
+          recoveries={alerts.filter((entry) => !entry.isHeavyLoad)}
         />
 
-        <Alerts strains={strains} />
+        <Alerts alerts={alerts} />
         <div>
           <button onClick={increment}>Increase load</button>
           <button onClick={decrement}>Decrease load</button>

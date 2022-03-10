@@ -1,5 +1,40 @@
 # Brian Boyko Technical Test Datadog
 
+## Technical Requirements
+
+A user should be able to view your application to answer the following questions about their computer:
+
+- [ ] What is my computer's current average CPU load?
+- [✔] How did the average CPU load change over a 10 minute window?
+- [✔] Has my computer been under heavy CPU load for 2 minutes or more? When? How many times?
+- [✔] Has my computer recovered from heavy CPU load? When? How many times?
+
+ 
+
+## Product requirements:
+
+- [✔] The front-end application should communicate with a local back-end service to retrieve CPU load average information from your computer (see below).
+- [✔] The front-end application should retrieve CPU load information every 10 seconds.
+- [✔] The front-end application should maintain a 10 minute window of historical CPU load information.
+- [✔] The front-end application should alert the user to high CPU load.
+- [ ] The front-end application should alert the user when CPU load has recovered.
+
+ 
+
+## Engineering requirements:
+
+- [ ] The alerting logic in your application should have tests.
+- [✔] The back-end service does not need to persist data.
+- [ ] Please write up a small explanation of how you would extend or improve your application design if you were building this for production.
+
+### A small explaination of how I would extend or improve the application design if I was building this for production
+
+First, I would probably suggest that the back-end be made an independent microservice. Next.js was a good choice for a simple proof of concept design and got up and running very quickly, but ideally the server logging the data should not be the same server that displays the front-end.  
+
+Right now, the alerting logic is not that sophisticated; rather than waiting for an event to happen, it creates responses out of the data that is already present.  
+
+I chose recharts as a quick solution to getting the info displayed in a line graph but there are some nagging visual bugs that may crop up even in this small test - and that, I will admit, does not look good on an application! The time it would take to debug this "heisenbug" error (sometimes it shows up, sometimes it doesn't) in recharts would likely take up more time than the actual test. 
+
 ## Technical Decisions
 
 - Next.js - As the solution requires both backend and frontend code, Next.js was an ideal solution.
