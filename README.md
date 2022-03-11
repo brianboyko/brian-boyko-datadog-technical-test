@@ -13,7 +13,7 @@ or http://localhost:3000/debug for some pre-captured data.
 
 ## PLEASE NOTE - KNOWN ISSUE
 
-I normally like to put a lot of spit and polish on technical tests like this, but I've noticed a "sometimes it happens, sometimes it doesn't" bug on recharts where the X-axis is incorrectly formatted, especially on the debug page. This is a known issue, and is one of the things I would fix if this was in production.
+I normally like to put a lot of spit and polish on technical tests like this, but I've noticed a "sometimes it happens, sometimes it doesn't" bug on recharts where the X-axis is incorrectly formatted on the Debug page on the debug page. This is a known issue, and is one of the things I would fix if this was in production.
 
 ## Technical Requirements
 
@@ -46,7 +46,7 @@ This is probably the biggest thing I would have done differently - I probably wo
 
 Lincoln was reported as saying: "Give me six hours to chop down a tree, and I'll spend five hours sharpening the axe."
 
-Because this was "just a technical test" I rushed into it, hoping to get you an answer as soon as possible.
+Because this was "just a technical test" I rushed into it, hoping to get you an answer as soon as possible. It was a tradeoff, but hopefully not one I would have made in the real world. 
 
 ### Create a seperate daemon, use websockets.
 
@@ -56,11 +56,9 @@ The alerting logic is not that sophisticated. It merely informs you that periods
 
 And like a **ton of bricks** in hindsight, it turns out what what I _really, really_ should have used was a seperate Node.js server that runs as a daemon, which used websockets to push alert messages to the browser. (Instead, I thought: well, this will need an API as well as a front-end, so start with Next.js as a starting point and just go from there.)
 
-What might have been a better solution would be to set up some sort of websocket service on the backend where the backend could send push alerts, rather than sending data to the front-end to be calculated in the browser.
-
 ### Do more research on a charting library.
 
-I hope that this doesn't happen, but Recharts seems to be a bit buggy - you may experience a visual bug with the chart (especially when browsing to localhost:3000/debug where I've got pre-captured test data). I don't think the problem lives in my code, I just wanted something a little quick and easy to deploy without having to deal with the overkill that is D3.
+Recharts seems to be a bit buggy - you may experience a visual bug with the chart. I don't think the problem lives in my code, I just wanted a quick and simple charting library. 
 
 ### Use Axios, not fetch.
 
