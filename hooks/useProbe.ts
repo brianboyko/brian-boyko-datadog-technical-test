@@ -17,7 +17,7 @@ const probeReducer = (
 // I wanted to get this to you by EOW, so I'm just marking this as
 // something I'd do different in production and be done with it.
 // Shoulda used Axios. :(
-  
+
 export const useProbe = () => {
   const [state, dispatch] = useImmerReducer(probeReducer, { data: [] });
 

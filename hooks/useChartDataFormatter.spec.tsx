@@ -33,6 +33,6 @@ describe("chartDataFormatter", () => {
         startTime: 1646838512943,
       },
     ]);
-    expect(testChart.combinedData).toHaveLength(60)
+    expect(testChart.combinedData).toHaveLength(60);
   });
 });

@@ -18,7 +18,7 @@ import { useCallback, useState } from "react";
    incoming live data. 
 */
 
-export default function Debug({styles}: {styles: any}) {
+export default function Debug({ styles }: { styles: any }) {
   const [intensity, setIntensity] = useState<number>(6);
   const increment = useCallback(
     () => setIntensity((i) => i + 1),
@@ -47,8 +47,12 @@ export default function Debug({styles}: {styles: any}) {
 
         <Alerts alerts={alerts} />
         <div>
-          <button data-testid="increment-button" onClick={increment}>Increase load</button>
-          <button data-testid="decrement-button" onClick={decrement}>Decrease load</button>
+          <button data-testid="increment-button" onClick={increment}>
+            Increase load
+          </button>
+          <button data-testid="decrement-button" onClick={decrement}>
+            Decrease load
+          </button>
           <div>Current load: {intensity / 10}</div>
         </div>
       </main>
