@@ -82,7 +82,7 @@ export const Alert = ({ alert, dismiss, isStrain }) => {
   const startOfDuration = format(alert.startTime, "kk:mm:ss");
 
   return (
-    <StyledAlert isStrain={isStrain}>
+    <StyledAlert data-testid="alert" isStrain={isStrain}>
       <StyledAlertInner>
         {isStrain ? <MdWarning size="2rem" /> : <MdDoneOutline size="2rem" />}
         <StyledAlertText>

@@ -1,10 +1,25 @@
 # Brian Boyko Technical Test Datadog
 
+## Installing and running
+
+```bash
+$ npm run install
+$ npm run build
+$ npm run start
+```
+
+Then browse to http://localhost:3000/ for live data,
+or http://localhost:3000/debug for some pre-captured data.
+
+## PLEASE NOTE - KNOWN ISSUE
+
+I normally like to put a lot of spit and polish on technical tests like this, but I've noticed a "sometimes it happens, sometimes it doesn't" bug on recharts where the X-axis is incorrectly formatted, especially on the debug page. This is a known issue, and is one of the things I would fix if this was in production.
+
 ## Technical Requirements
 
 A user should be able to view your application to answer the following questions about their computer:
 
-- [ ] What is my computer's current average CPU load?
+- [✔] What is my computer's current average CPU load?
 - [✔] How did the average CPU load change over a 10 minute window?
 - [✔] Has my computer been under heavy CPU load for 2 minutes or more? When? How many times?
 - [✔] Has my computer recovered from heavy CPU load? When? How many times?
@@ -15,15 +30,17 @@ A user should be able to view your application to answer the following questions
 - [✔] The front-end application should retrieve CPU load information every 10 seconds.
 - [✔] The front-end application should maintain a 10 minute window of historical CPU load information.
 - [✔] The front-end application should alert the user to high CPU load.
-- [ ] The front-end application should alert the user when CPU load has recovered.
+- [✔] The front-end application should alert the user when CPU load has recovered.
 
 ## Engineering requirements:
 
-- [ ] The alerting logic in your application should have tests.
+- [✔] The alerting logic in your application should have tests.
 - [✔] The back-end service does not need to persist data.
-- [ ] Please write up a small explanation of how you would extend or improve your application design if you were building this for production.
+- [✔] Please write up a small explanation of how you would extend or improve your application design if you were building this for production.
 
-### A small explaination of how I would extend or improve the application design if I was building this for production
+## A small explaination of how I would extend or improve the application design if I was building this for production
+
+### Clarify the requirements better.
 
 This is probably the biggest thing I would have done differently - I probably would have spent more time clarifying the requirements with the client.
 
@@ -31,19 +48,27 @@ Lincoln was reported as saying: "Give me six hours to chop down a tree, and I'll
 
 Because this was "just a technical test" I rushed into it, hoping to get you an answer as soon as possible.
 
+### Create a seperate daemon, use websockets.
+
 In this case, the alerting functionality may not be what you may have expected, now that I think about it.
 
-The alerting logic is not that sophisticated. It merely informs you that periods of recovery and high load _have happened_, not _are happening._ What might have been a better solution would be to set up some sort of websocket service on the backend and frontend where the backend could send push alerts in the form of toasts, rather than sending data to the front-end to be calculated in the browser.
+The alerting logic is not that sophisticated. It merely informs you that periods of recovery and high load _have happened_, not _are happening._
 
-Right now, the alerting logic is not that sophisticated; rather than waiting for an event to happen, it creates responses out of the data that is already present.
+And like a **ton of bricks** in hindsight, it turns out what what I _really, really_ should have used was a seperate Node.js server that runs as a daemon, which used websockets to push alert messages to the browser. (Instead, I thought: well, this will need an API as well as a front-end, so start with Next.js as a starting point and just go from there.)
 
-First, I would probably suggest that the back-end be made an independent microservice, and that it did contain stateful data. Next.js was a good choice for a simple proof of concept design and got up and running very quickly, but ideally the server logging the data should not be the same server that displays the front-end. If nothing else, hot-refresh means that when I would change code in the browser, it would often mean a server restart.
+What might have been a better solution would be to set up some sort of websocket service on the backend where the backend could send push alerts, rather than sending data to the front-end to be calculated in the browser.
 
-I chose recharts as a quick solution to getting the info displayed in a line graph but there are some nagging visual bugs that may crop up even in this small test - and that, I will admit, does not look good on an application! The time it would take to debug this "heisenbug" error (sometimes it shows up, sometimes it doesn't) in recharts would likely take up more time than the actual test.
+### Do more research on a charting library.
 
-## Technical Decisions
+I hope that this doesn't happen, but Recharts seems to be a bit buggy - you may experience a visual bug with the chart (especially when browsing to localhost:3000/debug where I've got pre-captured test data). I don't think the problem lives in my code, I just wanted something a little quick and easy to deploy without having to deal with the overkill that is D3.
 
-- Next.js - As the solution requires both backend and frontend code, Next.js was an ideal solution.
+### Use Axios, not fetch.
+
+While fetch is great and having something you can use natively is also super, the problem is that it's easier to mock Axios, a library, than it is to mock fetch, which is really two libraries - fetch for node and fetch for the browser. This made unit testing useProbe such a pain that I decided to abandon that custom hook.
+
+### Integration Testing (Cypress)
+
+In a production build, I'd probably want to have some form of integration testing with a library like Cypress or Playwright
 
 ---
 

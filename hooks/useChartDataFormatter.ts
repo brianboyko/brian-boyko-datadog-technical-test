@@ -1,4 +1,3 @@
-import { format } from "date-fns";
 import { useMemo } from "react";
 import { getHeavyCpuLoadIntervals } from "../logic/heavyCpuLoad";
 
