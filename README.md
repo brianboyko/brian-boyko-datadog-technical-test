@@ -1,4 +1,4 @@
-# Brian Boyko Technical Test Datadog
+# Carrie-Anne Boyko Technical Test Datadog
 
 ## Installing and running
 
